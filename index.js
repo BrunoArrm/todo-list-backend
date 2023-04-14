@@ -1,32 +1,31 @@
-const { consultar, atualizar, inserir, deletar } = require('./controllers/tarefas');
+const express = require('express');
+const router = require('./routes');
+const cors = require('cors'); // Importe o middleware cors
+const app = express();
+const port = 3000;
 
-async function GET() {
+app.use(cors()); // Adicione o middleware cors
+app.use(express.json());
+app.use(router);
 
-    const dados = await consultar();
-    console.log(dados);
-    
-}
+app.listen(port, () => {
+    console.log(`Servidor Todo escutando na porta ${port}`);
+})
 
-async function PUT( descricao, data, ordem, id ) { // Passar: descrição, data( AAA/MM/DD HH:MM ), ordem, ID que será atualizada
-    const dados = [ descricao, data, ordem, id ];
-    await atualizar(dados);
+// O código anterior do Itallo estava assim:
 
-    await GET();
+// const express = require('express');
+// const router = require('./routes');
+// const cors = require('cors'); // Importe o middleware cors
+// const app = express();
+// const port = 3000;
 
-}
+// app.use(cors()); // Adicione o middleware cors
 
-async function POST( descricao, data, ordem ) { // Passar: descrição, data( AAA/MM/DD HH:MM ), ordem
-    const dados = [ descricao, data, ordem ];
-    await inserir(dados);
+// app.use(express.json());
 
-    await GET();
-}
+// app.use(router);
 
-async function DELETE( id ) { //Passar ID que será deletada
-    await deletar( id );
-
-    await GET();
-
-}
-
-DELETE(9);
+// app.listen(port, () => {
+//     console.log(`Servidor Todo escutando na porta ${port}`);
+// })
