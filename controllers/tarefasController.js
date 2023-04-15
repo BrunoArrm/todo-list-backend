@@ -1,5 +1,5 @@
 const express = require('express');
-const { consultar, atualizar, inserir, deletar } = require('../dao/tarefasDAO');
+const { consultar, atualizar, inserir, deletar, consultarCondicional } = require('../dao/tarefasDAO');
 const router = express.Router();
 
 router.get('/', async (req, res) => {
@@ -7,11 +7,17 @@ router.get('/', async (req, res) => {
     res.send(dados);
 })
 
+router.get('/condicional', async (req, res) => {
+    const tarefa = req.body
+
+    const dados = await consultarCondicional(tarefa.executado);
+    res.send(dados);
+})
+
 router.post('/', async (req, res) => {
     const tarefa = req.body;
 
     var result = await inserir(tarefa);
-    console.log(result);
     res.send('Inserido com sucesso!');
 })
 
@@ -19,7 +25,6 @@ router.put('/', async (req, res) => {
     const tarefa = req.body;
 
     var result = await atualizar(tarefa);
-    console.log(result);
     res.send('Atualizado com sucesso!');
 })
 
@@ -27,7 +32,6 @@ router.delete('/', async (req, res) => {
     const tarefa = req.body;
 
     var result = await deletar(tarefa.id_tarefa);
-    console.log(result);
     res.send('Deletado com sucesso!');
 })
 
